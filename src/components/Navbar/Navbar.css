@@ -1,0 +1,56 @@
+.Webicon
+{
+    height:100px;
+    width:100px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.Navbar
+{
+    width: 100%;
+    padding: 10px 10px;
+    background-color: #242424;
+    display: flex;
+    justify-content: space-between;
+    position:fixed;
+    color: white;
+    font-size: 20px;    
+    z-index: 999;  /* it should be above all content*/
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.leftnavbar
+{
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.leftnavbar ul{
+    display: flex;
+    list-style: none;
+    gap:20px;
+}
+
+.leftnavbar ul li
+{
+    cursor: pointer;
+}
+
+.rightnavbar
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+}
+
+.rightnavbar nav form
+{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor:pointer;
+}

@@ -1,0 +1,31 @@
+.footer
+{
+    padding:50px;
+    color: aliceblue;
+    background-color: black;
+    bottom: 0%;
+}
+.insta
+{
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.youtube
+{
+    width: 45px;
+    height:45px;
+    border-radius: 10px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.text-list
+{
+    padding: 20px;
+}
+.text-list p
+{
+    cursor: pointer;
+}

@@ -1,0 +1,105 @@
+.Bannerimage {
+    width: 100%;
+    cursor: pointer;
+}
+.Banner_caption {
+    position: absolute;
+    color: white;
+    width: 100%;
+    padding-left: 6%;
+    text-align: center;
+    top: 80%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    align-items: center;
+    justify-content:end;
+}
+.Banner_caption p{
+  font-weight:bolder;
+  font-size:60px;
+}
+.card {
+    margin: 75px;
+  padding: 10px;
+  background: #434446;
+  border-radius: 12px;
+  max-width: 100%;
+}
+
+.card h2 {
+  margin-bottom: 15px;
+  font-size: 35px;
+  color: #281e1e;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.card-list {
+  display: flex;
+  gap: 20px;                  
+  overflow-x: auto;          
+  overflow-y: hidden;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.card-list::-webkit-scrollbar {
+  height: 8px;
+  display: none;
+}
+
+.card-list::-webkit-scrollbar-thumb {
+  background: #383434;
+  border-radius: 4px;
+}
+
+.card-list::-webkit-scrollbar-track {
+  background: #312f2f;
+}
+
+.card-list .card-item {
+  min-width: 200px;           
+  flex: 0 0 auto;            
+  background: rgb(58, 56, 56);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card-list .card-item:hover {
+  transform: scale(1.05);
+}
+
+.card-list img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.card-list h3 {
+  margin: 5px 0 5px;
+  font-size: 18px;
+  color: #222;
+}
+
+.card-list p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.loading
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999
+}
