@@ -1,17 +1,17 @@
-// BookingPage.jsx
+
 import React, { useState,useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Card, ProgressBar } from "react-bootstrap";
-import mockMovies from "../mockData/mockMovies";
 import axios from "axios";
 import Navigationbar from "../components/Navbar/Navbar";
 import Footerbar from "../components/Footer/Footer";
+import loadingvideo from  '/src/assets/Loading.mp4';
+import like from '../assets/like.png';
 
-export default function BookingPage() {
+function BookingPage() {
   const { movieId } = useParams();
   const navigate = useNavigate();
-  const [movie,setMovie]=useState(null)
-  //const movie = mockMovies.find(m => m._id === movieId);
+  const [movie,setMovie]=useState(null);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -27,7 +27,19 @@ export default function BookingPage() {
     fetchMovie();
   }, [movieId]);
 
-  const [vote, setVote] = useState("");
+  const [liked, setLiked] = useState(false);
+  const [clicked, setClicked] = useState(false); // track if clicked once
+
+  const handleClick = () => {
+    if (clicked==false) {       // only allow first click
+      setLiked(true);
+      setClicked(true);
+
+      axios.post(`http://127.0.0.1:5000/likes/${movieId}`)
+      .then((res)=>console.log(res));
+        
+    }
+  };
 
   const handleBook = () => {
     navigate(`/language/${movieId}`);
@@ -35,7 +47,7 @@ export default function BookingPage() {
 
   if(!movie)
   {
-    return<></>
+    return<>{loadingvideo}</>
   }
 
   return (
@@ -62,18 +74,25 @@ export default function BookingPage() {
 
         {/* Right Half */}
         <Col md={6}>
-          <h5>Vote / Rating</h5>
+          <h5>Rating</h5>
           <div className="mb-3">
-            {["Blockbuster","Hit","Average","Flop"].map(v => (
-              <Button
-                key={v}
-                variant={vote === v ? "success" : "secondary"}
-                className="me-2 mb-2"
-                onClick={()=>setVote(v)}
-              >
-                {v}
-              </Button>
-            ))}
+            <br></br>
+                  <img style={{width:"40px",height:"40px"}} className="like" src={like} alt="Like icon" />
+                  <button
+      onClick={() => handleClick() }
+      style={{
+        backgroundColor: liked ? "green" : "red",
+        color: "white",
+        padding: "10px 20px",
+        border: "none",
+        borderRadius: "8px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        transition: "background-color 0.3s ease",
+      }} className="m-2" >
+      Like
+    </button>
+                  <p>Hit Your Like Here</p>
           </div>
 
           <Button variant="primary" onClick={handleBook}>Book Tickets</Button>
@@ -85,3 +104,5 @@ export default function BookingPage() {
     
   );
 }
+
+export default BookingPage;

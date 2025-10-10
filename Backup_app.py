@@ -6,14 +6,20 @@ from bson import ObjectId
 from datetime import datetime
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
-from bson.errors import InvalidId
-import os
+
+import os                   # To interact with the env
+from flask_mail import Mail,Message
+import dotenv
+
+dotenv.load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Allow frontend to access backend
+
+CORS(app)                   # Allow frontend to access backend
 
 # 🔗 MongoDB connection
 client = MongoClient("mongodb://localhost:27017/")
+
 db = client["auth_db"]
 users_collection = db["users"]
 
@@ -26,10 +32,20 @@ top_movie_collection = db_home_movies["Top_movies"]
 
 dbmovie = client["movie_booking"]
 movie_collection = dbmovie["movies"]
-
 theatre_collection = dbmovie["theatres"]
-
 bookings_collection = dbmovie["bookings"]
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')  # your Gmail
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')  # App Password
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_USERNAME')  # default sender
+
+mail = Mail(app)            # Integrating the mail and flask
 
 
 # 🟢 Signup API
@@ -70,12 +86,12 @@ def login():
     if not user:
         return jsonify({"message": "Invalid email or password!"}), 401
 
-    if not bcrypt.checkpw(password.encode('utf-8'), user['password']):
+    if not bcrypt.checkpw(password.encode('utf-8') , user['password']):
         return jsonify({"message": "Invalid email or password!"}), 401
 
-    return jsonify({"message": "Login successful!", "user": {"name": user['name'], "email": user['email']}}), 200
+    return jsonify({"message": "Login successful!", "user" : {"name": user['name'], "email": user['email']}}), 200
 
-
+# Home API
 
 @app.route("/get", methods=["GET"])
 def getdata():
@@ -85,6 +101,7 @@ def getdata():
         data.append(doc)
     return jsonify(data)
 
+
 @app.route("/gettopmovie", methods=["GET"])
 def gettopdata():
     data = []
@@ -92,6 +109,8 @@ def gettopdata():
         doc['_id'] = str(doc['_id'])       # convert ObjectId to string
         data.append(doc)
     return jsonify(data)
+
+# Movie Card API
 
 @app.route("/get/<id>", methods=['GET'])
 def gettrailer(id):
@@ -113,14 +132,17 @@ def gettoptrailer(id):
     try:
         movie = top_movie_collection.find_one({"_id": ObjectId(id)})
         if movie:
-            movie['_id'] = str(movie['_id'])  # convert for JSON
-            return jsonify(movie)
+            movie['_id'] = str(movie['_id'])  
+            return jsonify(movie)               # convert for JSON
         else:
             return jsonify({"error": "No record for this movie"}), 404
     except InvalidId:
         return jsonify({"error": "Invalid movie ID"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+ # Booking movie collection  API
 
 @app.route("/movies", methods=["GET"])
 def get_movies():
@@ -129,11 +151,13 @@ def get_movies():
                                                  "genre": 1, "language": 1,
                                                  "rating": 1, "likes": 1}))
         # Convert ObjectId to string
-        for movie in movies:
-            movie["_id"] = str(movie["_id"])
+        for movie_items in movies:
+            movie_items["_id"] = str(movie_items["_id"])
         return jsonify(movies), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+# Particular movie details API
 
 @app.route("/booking/<movie_id>", methods=["GET"])
 def get_movie_by_id(movie_id):
@@ -149,10 +173,25 @@ def get_movie_by_id(movie_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+# Like API
+
+@app.route("/likes/<movie_id>", methods=["POST"])
+def Give_Like_To_Movies(movie_id):
+    try:
+        result = movie_collection.update_one({"_id":movie_id},{"$inc":{"likes":1}})
+
+        if result.matched_count == 0:
+            return jsonify({"Message":"Movie is not found"}),404
+        return jsonify({"Message":"Like added successfully"}),200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Available Theaters API
+    
 @app.route("/theaters", methods=["GET"])
 def get_theaters():
     try:
-        # Get query parameters
         movie_id = request.args.get("movieId")
         city = request.args.get("city")
         lang = request.args.get("lang")
@@ -174,7 +213,8 @@ def get_theaters():
         # Convert ObjectId to string
         for theater in theaters:
             theater["_id"] = str(theater["_id"])
-            # Optionally convert ObjectIds inside movies if you have them
+
+            # convert movie objectId of the movie inside the theater list to string
             for movie in theater.get("movies", []):
                 if "_id" in movie:
                     movie["_id"] = str(movie["_id"])
@@ -189,7 +229,6 @@ def get_theaters():
 @app.route("/get_time", methods=["GET"])
 def get_show_times():
     try:
-        # Get query parameters
         movie_id = request.args.get("movieId")
         city = request.args.get("city")
         lang = request.args.get("lang")
@@ -204,7 +243,7 @@ def get_show_times():
             "city": city,
             "movies.language": lang,
             "movies._id": movie_id
-        }, {"movies.$": 1, "_id": 0})
+        } , {"movies.$": 1, "_id": 0})
 
         if not theater or "movies" not in theater:
             return jsonify({"showTimes": []}), 200
@@ -215,6 +254,7 @@ def get_show_times():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+# API to find the already booked seats
 
 @app.route("/api/bookedSeats", methods=["GET"])
 def get_booked_seats():
@@ -238,9 +278,32 @@ def get_booked_seats():
     
     return jsonify(booked_seats)
 
-# ----------------------------
-# Book seats
-# ----------------------------
+
+def send_mail(userId,theaterName,city,language,timing,seat_list):
+    msg = Message(
+        subject="From Cine Flow....",
+        recipients=[userId]    
+        )                   # must be a valid email
+    msg.body = (
+        f"Hello sir/Madam,\n\n"
+        f"Your booking was successful!\n\n"
+        f"Booking Details:\n"
+        f"Theater: {theaterName}\n"
+        f"City: {city}\n"
+        f"Language: {language}\n"
+        f"Timing: {timing}\n"
+        f"Seats: {seat_list}\n\n"
+        "Thanks for choosing Cine Flow!\n"
+        "If you have any queries, contact support."
+        )
+    mail.send(msg)
+
+    print(os.getenv("MAIL_USERNAME"))
+    print(os.getenv("MAIL_PASSWORD"))
+
+
+#  API To Book seats
+
 @app.route("/api/bookSeats", methods=["POST"])
 def book_seats():
     data = request.get_json()
@@ -250,9 +313,10 @@ def book_seats():
     language = data.get("language")
     theaterName = data.get("theaterName")
     timing = data.get("timing")
-    seats = data.get("seats")  # list of {seat: "A1", type: "Adult"}
+    seats = data.get("seats")  # list of selected seats {seat: "A1", type: "Adult"}
 
-    # Check for conflicts
+    # Check for conflicts whether the selected seats are already booked
+
     conflict = bookings_collection.find_one({
         "movieId": movieId,
         "city": city,
@@ -266,6 +330,7 @@ def book_seats():
         return jsonify({"message": "Some seats are already booked"}), 400
 
     # Insert booking
+
     booking_doc = {
         "userId": userId,
         "movieId": movieId,
@@ -278,11 +343,18 @@ def book_seats():
     }
     bookings_collection.insert_one(booking_doc)
 
+
+    seat_list = ", ".join([s['seat'] for s in seats])
+
+    send_mail(userId,theaterName,city,language,timing,seat_list)
+
+
     return jsonify({"message": "Seats booked successfully"}), 200
 
 
 @app.route("/api/bookedseat/<user_id>", methods=["GET"])
 def get_user_bookings(user_id):
+    
     # Fetch bookings for the user
     bookings = list(bookings_collection.find({"userId": user_id}))
 

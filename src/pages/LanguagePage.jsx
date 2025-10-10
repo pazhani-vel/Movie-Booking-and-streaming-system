@@ -14,7 +14,6 @@ export default function LanguagePage() {
   
 
   const cities = ["Chennai","Bangalore"];
-  //const countries = ["USA","UK","France","Germany","Japan","Australia","Canada","Singapore", /* add 50 */];
 
   const handleSearch = () => {
     navigate(`/theatres/${movieId}/${city}/${selectedLang}`);
