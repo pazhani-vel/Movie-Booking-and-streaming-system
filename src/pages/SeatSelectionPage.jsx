@@ -61,12 +61,29 @@ const SeatSelectionPage = () => {
         seats: selectedSeats.map(seat => ({ seat, type: seatAudienceMap[seat] }))
       });
       console.log("Booking successful");
-
       alert("Seats booked successfully!");
       navigate(`/mybookingpage`)
+      
     } catch (err) {
       alert(err.response.data.message || "Some seats are already booked");
     }
+
+
+    try {
+      await axios.post("http://localhost:5000/sendmail", {
+        userId: user.email,
+        movieId,
+        city,
+        language: lang,
+        theaterName,
+        timing,
+        seats: selectedSeats.map(seat => ({ seat, type: seatAudienceMap[seat] }))
+      });
+      console.log("Mail sent successfully");
+    } catch (err) {
+      console.log(err);
+    }
+
   };
 
   return (

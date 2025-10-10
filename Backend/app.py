@@ -279,31 +279,6 @@ def get_booked_seats():
     return jsonify(booked_seats)
 
 
-# def send_mail(userId,theaterName,city,language,timing,seat_list):
-#     msg = Message(
-#         subject="From Cine Flow....",
-#         recipients=[userId]    
-#         )                   # must be a valid email
-#     msg.body = (
-#         f"Hello sir/Madam,\n\n"
-#         f"Your booking was successful!\n\n"
-#         f"Booking Details:\n"
-#         f"Theater: {theaterName}\n"
-#         f"City: {city}\n"
-#         f"Language: {language}\n"
-#         f"Timing: {timing}\n"
-#         f"Seats: {seat_list}\n\n"
-#         "Thanks for choosing Cine Flow!\n"
-#         "If you have any queries, contact support."
-#         )
-#     mail.send(msg)
-
-#     print(os.getenv("MAIL_USERNAME"))
-#     print(os.getenv("MAIL_PASSWORD"))
-
-#     return 1
-
-
 #  API To Book seats
 
 @app.route("/api/bookSeats", methods=["POST"])
@@ -345,12 +320,45 @@ def book_seats():
     }
     bookings_collection.insert_one(booking_doc)
 
+    return jsonify({"message": "Seats booked successfully"}), 200
+
+def send_mail(userId,theaterName,city,language,timing,seat_list):
+    msg = Message(
+        subject="From Cine Flow....",
+        recipients=[userId]    
+        )                   # must be a valid email
+    msg.body = (
+        f"Hello sir/Madam,\n\n"
+        f"Your booking was successful!\n\n"
+        f"Booking Details:\n"
+        f"Theater: {theaterName}\n"
+        f"City: {city}\n"
+        f"Language: {language}\n"
+        f"Timing: {timing}\n"
+        f"Seats: {seat_list}\n\n"
+        "Thanks for choosing Cine Flow!\n"
+        "If you have any queries, contact support."
+        )
+    mail.send(msg)
+
+    print(os.getenv("MAIL_USERNAME"))
+    print(os.getenv("MAIL_PASSWORD"))
+
+@app.route("/sendmail", methods=["POST"])
+def send_email():
+    data = request.get_json()
+    userId = data.get("userId")
+    theaterName = data.get("theaterName")
+    city = data.get("city")
+    language = data.get("language")
+    timing = data.get("timing")
+    seats = data.get("seats")  # list of selected seats {seat: "A1", type: "Adult"}
 
     seat_list = ", ".join([s['seat'] for s in seats])
 
-    #  send_mail(userId,theaterName,city,language,timing,seat_list) 
+    send_mail(userId,theaterName,city,language,timing,seat_list)
 
-    return jsonify({"message": "Seats booked successfully"}), 200
+    return jsonify({"message": "Email sent successfully"}), 200
 
 
 @app.route("/api/bookedseat/<user_id>", methods=["GET"])
