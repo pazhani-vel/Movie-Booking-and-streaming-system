@@ -47,7 +47,7 @@ function TicketBookingPage() {
         <Row className="mb-4">
           {movies.sort((x,y)=>{return y.likes-x.likes}).map((movie) => (
             <Col md={3} sm={6} xs={12} key={movie._id} className="mb-4 p-0">
-              <MovieCard id={movie._id} name={movie.name} genre={movie.genre} language={movie.language} rating={movie.rating} like={movie.likes} onClick={() => handleMovieClick(movie)} />
+              <MovieCard id={movie._id} name={movie.name} genre={movie.genre} language={movie.language} rating={movie.rating} like={movie.likes} poster={movie.poster_url} onClick={() => handleMovieClick(movie)} />
             </Col>
           )).slice(0,3)}
         </Row>

@@ -30,12 +30,7 @@ const ShowTimingPage = () => {
 
     fetchShowTimes();
   }, [movieId, city, lang, theaterName]);
-  // const { movieId, theatreName } = useParams();
-  // const { state } = useLocation();
   const navigate = useNavigate();
-
-  // const theatre = state?.theatre;
-  // if (!theatre) return <p className="text-center mt-10">No theatre selected.</p>;
 
   const handleTimingClick = (time) => {
     navigate(`/seatselection/${movieId}/${city}/${lang}/${theaterName}/${time}`);
@@ -44,6 +39,9 @@ const ShowTimingPage = () => {
   return (
     <div className="p-6">
       <Navigationbar/>
+      <div>
+        
+      </div>
       <h1 className="text-2xl font-bold mb-4" style={{ paddingTop: "10rem" }}>{theaterName}</h1>
       <h2 className="text-lg mb-2">Select a showtime:</h2>
       <div className="flex flex-wrap gap-3">
@@ -58,7 +56,6 @@ const ShowTimingPage = () => {
           </button>
 
         ))}          
-
       </div>
       <Footerbar/>
     </div>

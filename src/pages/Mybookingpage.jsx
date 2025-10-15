@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import "./MyBookings.css"; // for custom styling
+import "./MyBookings.css";
 import { UserContext } from "../context/UserContext";
 import Navigationbar from "../components/Navbar/Navbar";
 import Footerbar from "../components/Footer/Footer";
@@ -39,7 +39,7 @@ const MyBookings = () => {
           {bookings.map((b) => (
             <div key={b._id} className="booking-card">
               <img
-                src={b.poster || "/placeholder.jpg"}
+                src={b.poster}
                 alt={b.movieTitle || "Movie Poster"}
                 className="movie-poster"
               />

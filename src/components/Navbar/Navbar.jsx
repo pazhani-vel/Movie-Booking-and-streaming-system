@@ -12,8 +12,6 @@ function Navigationbar()
     <div className="leftnavbar">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <img src={icon} alt="Icon" className="Webicon"/>
-        
-
         <div id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <Link to="/home"><li class="nav-item active">
