@@ -15,7 +15,7 @@ import Login_user from "./pages/Login_user/login_user.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
 import MyBookings from "./pages/Mybookingpage.jsx";
 import Home from "./pages/Home/Home.jsx";
-import Playerpage from "./pages/Playerpage/Playerpage.jsx";
+import Playerpage from "./Playerpage/Playerpage.jsx";
 import Login_admin from "./pages/Login_admin/login_admin.jsx";
 import Admin_MoviePage from "./Admin_page/Admin_Home.jsx";
 

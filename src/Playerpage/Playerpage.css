@@ -1,0 +1,62 @@
+.title-box
+{
+    font-size:70px;
+    padding:20px;
+}
+
+.title
+{
+    font-family:'Times New Roman', Times, serif;
+    column-gap: 10px;
+    font-weight: 400;
+    font-size: 100px;
+    color: rgb(225, 219, 211);
+}
+
+.video-player{
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.box {
+    padding:50px;
+    border-radius: 20px;
+    background-color: black;
+}
+
+.video-player video {
+    width: 100%;      
+    height: auto;      
+    max-height: 500px; 
+    border-radius: 12px;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+.play-container
+{
+    padding-top: 20px;
+    color: aliceblue;
+    background-color: rgb(75, 69, 69);
+}
+
+.right-box
+{
+    padding-left: 100px;
+}
+
+.loading
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999
+}
