@@ -1,9 +1,9 @@
 import React, { useState,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../context/UserContext.jsx";
+import { UserContext } from "../../context/UserContext.jsx";
 
-const Login = () => {
+const Login_user = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -54,7 +54,23 @@ const Login = () => {
         <div className="col-md-5">
           <div className="card">
             <div className="card-body">
-              <h3 className="text-center mb-4">Login</h3>
+              <h3 className="text-center mb-4">User Login</h3>
+
+              <div className="login-toggle text-center mb-4">
+                <button
+                  className="btn btn-outline-secondary  "
+                  onClick={() => navigate("/admin_login")}
+                >
+                  Admin Login
+                </button>
+                <button
+                  className="btn btn-outline-primary me-2 active-btn"
+                  onClick={() => navigate("/")}
+                >
+                  User Login
+                </button>
+              </div>
+              
               {error && <div className="alert alert-danger">{error}</div>}
               <form onSubmit={handleLogin}>
                 <div className="mb-3">
@@ -98,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login_user;

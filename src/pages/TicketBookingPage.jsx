@@ -1,8 +1,8 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Navbar } from "react-bootstrap";
-import MovieCard from "../components/MovieCard";
-import BookingModal from "../components/BookingModal";
+import MovieCard from "../components/MovieCard.jsx";
+import BookingModal from "../components/BookingModal.jsx";
 import { UserContext } from "../context/UserContext.jsx";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";

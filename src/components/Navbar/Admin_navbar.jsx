@@ -3,7 +3,7 @@ import './Navbar.css'
 import icon from '/src/assets/Webicon.jpeg'
 import {Link} from 'react-router-dom'
 
-function Navigationbar()
+function Admin_Navigationbar()
 {
     return(
         <>
@@ -11,27 +11,10 @@ function Navigationbar()
 
     <div className="leftnavbar">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <img src={icon} alt="Icon" className="Webicon"/>
+            <Link to="/admin_home"><img src={icon} alt="Icon" className="Webicon"/></Link>
         <div id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <Link to="/home"><li class="nav-item active">
-        <a class="nav-link" href="#">Home</a>
-        </li>
-            </Link>
-        
-        <Link to="/TicketBookingpage"><li>
-        <a class="nav-link" href="#">Ticket Booking</a>
-        </li></Link>
-        <Link to="/mybookingpage"><li>
-        <a class="nav-link" href="#">My Booking</a>
-        </li>
-        </Link>
-        
-        <Link to="/"><li>
-        <a class="nav-link" href="#">sign out</a>
-        </li>
-        </Link>
-        
+
         </ul>
         </div>
         </nav>
@@ -57,4 +40,4 @@ function Navigationbar()
     )
 }
 
-export default Navigationbar;
+export default Admin_Navigationbar;

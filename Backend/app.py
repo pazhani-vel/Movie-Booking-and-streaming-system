@@ -35,6 +35,9 @@ movie_collection = dbmovie["movies"]
 theatre_collection = dbmovie["theatres"]
 bookings_collection = dbmovie["bookings"]
 
+dbAdmin = client["admin"]
+AdminDetails_collection = dbAdmin["AdminDetails"]
+
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -77,7 +80,7 @@ def signup():
 
 # 🔑 Login API
 @app.route('/login', methods=['POST'])
-def login():
+def login_user():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -91,6 +94,80 @@ def login():
 
     return jsonify({"message": "Login successful!", "user" : {"name": user['name'], "email": user['email']}}), 200
 
+
+@app.route('/admin_login', methods=['POST'])
+def login_admin():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    # Find admin by email
+    admin = AdminDetails_collection.find_one({"email": email})
+
+    # If no admin found
+    if not admin:
+        return jsonify({"message": "Invalid email or password!"}), 401
+
+    # Compare plain text password
+    if password != admin['password']:
+        return jsonify({"message": "Invalid email or password!"}), 401
+
+    # If everything is correct
+    return jsonify({
+        "message": "Login successful!",
+        "user": {
+            "name": admin['name'],
+            "email": admin['email']
+        }
+    }), 200
+
+
+
+#Admin API
+
+@app.route("/Add_movie_admin", methods=["POST"])
+def admin_add_movie():
+    data = request.get_json()
+    title = data.get("title")
+    cast = data.get("cast")
+    description = data.get("description")
+    genre = data.get("genre")
+
+    if not all([title, cast, description, genre]):
+        return jsonify({"message": "All fields are required!"}), 400
+
+    movie = {
+        "title": title,
+        "cast": cast,
+        "description": description,
+        "genre": genre,
+        "poster":"http://127.0.0.1:5000/static/poster_not_available.png",
+        "trailer":""
+    }
+
+    home_movie_collection.insert_one(movie)
+    return jsonify({"message": "Movie added successfully!"}), 201
+
+
+# Get all movies
+@app.route("/admin_page_movies", methods=["GET"])
+def admin_get_movies():
+    movies = []
+    for m in home_movie_collection.find():
+        m["_id"] = str(m["_id"])
+        movies.append(m)
+    return jsonify({"movies": movies})
+
+
+# Delete a movie
+@app.route("/Delete_movie_admin/<movie_id>", methods=["DELETE"])
+def admin_delete_movie(movie_id):
+    result = home_movie_collection.delete_one({"_id": ObjectId(movie_id)})
+    if result.deleted_count == 1:
+        return jsonify({"message": "Movie deleted successfully!"})
+    else:
+        return jsonify({"message": "Movie not found!"}), 404
+    
 # Home API
 
 @app.route("/get", methods=["GET"])

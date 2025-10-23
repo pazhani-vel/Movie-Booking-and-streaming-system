@@ -1,0 +1,126 @@
+.admin-container {
+  background-color: #121212;
+  color: #f0f0f0;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.form-card {
+  background-color: #1e1e1e;
+  padding-bottom: 30px;
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 150px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #000;
+  width: 400px;
+  margin-bottom: 40px;
+}
+
+.form-title {
+  color: #00b4d8;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-card input,
+.form-card textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #2a2a2a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}
+
+.form-card textarea {
+  height: 80px;
+  resize: none;
+}
+
+.add-btn {
+  width: 100%;
+  background-color: #00b4d8;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #0096c7;
+}
+
+.movies-list {
+  width: 90%;
+  max-width: 1000px;
+}
+
+.list-title {
+  text-align: center;
+  color: #00b4d8;
+  margin-bottom: 10px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 40px;
+}
+
+th,
+td {
+  border: 1px solid #444;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #1e1e1e;
+  color: #00b4d8;
+}
+
+td {
+  background-color: #2a2a2a;
+}
+
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #ff1a1a;
+}
+
+.alert {
+  color: #ff4d4d;
+  margin-bottom: 10px;
+  text-align: center;
+}

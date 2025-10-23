@@ -39,18 +39,43 @@
     cursor: pointer;
 }
 
-.rightnavbar
-{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    cursor: pointer;
+.rightnavbar {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #1e1e1e; /* dark navbar background */
+  padding: 10px 20px;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 2px 5px #000;
 }
 
-.rightnavbar nav form
-{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    cursor:pointer;
+.rightnavbar .navbar {
+  width: 100%;
+}
+
+.rightnavbar .form-inline {
+  display: flex;
+  align-items: center;
+}
+
+.rightnavbar .signout {
+  list-style: none;
+}
+
+.rightnavbar .signout li {
+  display: inline-block;
+}
+
+.rightnavbar .signout a.nav-link {
+  color: #f0f0f0;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.rightnavbar .signout a.nav-link:hover {
+  background-color: #cb3c10;
+  color: #fff;
+  text-decoration: none;
 }
