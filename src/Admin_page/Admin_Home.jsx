@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Admin_Home.css";
-import Admin_Navigationbar from "../components/Navbar/Admin_navbar";
 
 const Admin_MoviePage = () => {
   const [title, setTitle] = useState("");
@@ -12,11 +11,10 @@ const Admin_MoviePage = () => {
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
 
-  // Fetch movies from backend
   const fetchMovies = async () => {
     try {
       const res = await axios.get("http://127.0.0.1:5000/admin_page_movies");
-      setMovies(res.data.movies); // Important: use res.data.movies
+      setMovies(res.data.movies);
     } catch (err) {
       console.error("Error fetching movies:", err);
       setMessage("Failed to fetch movies");
@@ -27,7 +25,6 @@ const Admin_MoviePage = () => {
     fetchMovies();
   }, []);
 
-  // Add a new movie
   const handleAddMovie = async (e) => {
     e.preventDefault();
 
@@ -45,6 +42,7 @@ const Admin_MoviePage = () => {
         description,
         genre,
       });
+
       setMessage(res.data.message);
       setTitle("");
       setCast("");
@@ -57,7 +55,6 @@ const Admin_MoviePage = () => {
     }
   };
 
-  // Delete a movie
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this movie?")) return;
 
@@ -73,7 +70,6 @@ const Admin_MoviePage = () => {
     }
   };
 
-  // Filter movies based on search
   const filteredMovies = movies.filter(
     (m) =>
       m.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -83,91 +79,75 @@ const Admin_MoviePage = () => {
 
   return (
     <>
-    <Admin_Navigationbar/>
-    <div className="admin-container">
-      <div className="form-card">
-        <h2 className="form-title">Add New Movie</h2>
-        {message && <div className="alert">{message}</div>}
-        <form onSubmit={handleAddMovie}>
-          <input
-            type="text"
-            placeholder="Movie Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Cast (comma separated)"
-            value={cast}
-            onChange={(e) => setCast(e.target.value)}
-          />
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Genre"
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
-          />
-          <button type="submit" className="add-btn">
-            Add Movie
-          </button>
-        </form>
-      </div>
+      {/* ✅ TOP HEADER */}
+      <header className="admin-header">
+        <h1 className="logo-title">MovieVerse</h1>
 
-      <div className="movies-list">
-        <h2 className="list-title">All Movies</h2>
-        <input
-          type="text"
-          placeholder="Search by title or cast..."
-          className="search-input"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        {filteredMovies.length === 0 ? (
-          <p>No movies found.</p>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Cast</th>
-                <th>Description</th>
-                <th>Genre</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredMovies.map((movie) => (
-                <tr key={movie._id}>
-                  <td>{movie.title}</td>
-                  <td>
-                    {Array.isArray(movie.cast)
-                      ? movie.cast.join(", ")
-                      : movie.cast}
-                  </td>
-                  <td>{movie.description}</td>
-                  <td>{movie.genre}</td>
-                  <td>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(movie._id)}
-                    >
-                      Remove
-                    </button>
-                  </td>
+        <button className="logout-btn" onClick={() => (window.location.href = "/admin_login")}>
+          <i className="fa-solid fa-door-open"></i> Sign Out
+        </button>
+      </header>
+
+      {/* ✅ REST PAGE CONTENT */}
+      <div className="admin-container">
+        <div className="form-card">
+          <h2 className="form-title">🎬 Add New Movie</h2>
+
+          {message && <div className="alert">{message}</div>}
+
+          <form onSubmit={handleAddMovie}>
+            <input type="text" placeholder="Movie Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input type="text" placeholder="Cast (comma separated)" value={cast} onChange={(e) => setCast(e.target.value)} />
+            <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <input type="text" placeholder="Genre" value={genre} onChange={(e) => setGenre(e.target.value)} />
+            <button type="submit" className="add-btn">Add Movie</button>
+          </form>
+        </div>
+
+        <div className="movies-list">
+          <h2 className="list-title">All Movies</h2>
+
+          <input
+            type="text"
+            placeholder="Search by title or cast..."
+            className="search-input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          {filteredMovies.length === 0 ? (
+            <p>No movies found.</p>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Cast</th>
+                  <th>Description</th>
+                  <th>Genre</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {filteredMovies.map((movie) => (
+                  <tr key={movie._id}>
+                    <td>{movie.title}</td>
+                    <td>{Array.isArray(movie.cast) ? movie.cast.join(", ") : movie.cast}</td>
+                    <td>{movie.description}</td>
+                    <td>{movie.genre}</td>
+                    <td>
+                      <button className="delete-btn" onClick={() => handleDelete(movie._id)}>
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
-    </div>
     </>
-    
   );
 };
 

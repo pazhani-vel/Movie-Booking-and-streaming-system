@@ -18,6 +18,9 @@ import Home from "./pages/Home/Home.jsx";
 import Playerpage from "./Playerpage/Playerpage.jsx";
 import Login_admin from "./pages/Login_admin/login_admin.jsx";
 import Admin_MoviePage from "./Admin_page/Admin_Home.jsx";
+import ProfileScreen from "./pages/PSA.jsx";
+import Favourite from "./pages/Favourite.jsx";
+import Wishlist from "./pages/Wishlist.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -25,7 +28,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Routes>
   <Route path="/admin_login" element={<Login_admin/>}/>
   <Route path="/admin_home" element={<Admin_MoviePage/>}/>
+  <Route path="/favourite" element={<Favourite/>}/>
+  <Route path="/profile" element={<ProfileScreen/>}/>
   <Route path="/get/:id" element={<Playerpage/>}/>
+  <Route path="/wishlist" element={<Wishlist/>}/>
   <Route path="/home" element={<Home/>} />
   <Route path="/" element={<Login_user/>} />
   <Route path="/mybookingpage" element={<MyBookings/>}/>

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Login_admin.css";  // ✅ new CSS file
 import { UserContext } from "../../context/UserContext";
 
 const Login_admin = () => {
@@ -36,70 +37,49 @@ const Login_admin = () => {
       });
 
       setUser(res.data.user);
-      console.log(res.data.user);
-
       alert(res.data.message);
-      navigate("/admin_home"); // redirect after admin login
+      navigate("/admin_home");
     } catch (err) {
       setError("Admin Not Found");
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-5">
-          <div className="card admin-card shadow-lg">
-            <div className="card-body">
-              <h3 className="text-center mb-3 admin-title">Admin Login</h3>
+    <div className="login-bg-admin">
+      <div className="login-wrapper-admin">
+        <div className="login-card-admin">
+          <h3 className="title-admin">Admin Login</h3>
 
-              <div className="login-toggle text-center mb-4">
-                <button
-                  className="btn btn-outline-primary me-2 active-btn"
-                  onClick={() => navigate("/admin_login")}
-                >
-                  Admin Login
-                </button>
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => navigate("/")}
-                >
-                  User Login
-                </button>
-              </div>
-              <center>              {error && <div className="alert alert-danger">{error}</div>}
-</center>
-
-              <form onSubmit={handleLogin}>
-                <div className="mb-3">
-                  <label className="form-label">Email address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-
-                <button type="submit" className="btn btn-primary w-100">
-                  Login
-                </button>
-              </form>
-
-            </div>
+          <div className="switch-container">
+            <button className="switch-btn active">Admin Login</button>
+            <button className="switch-btn" onClick={() => navigate("/")}>User Login</button>
           </div>
+
+          {error && <div className="alert-box">{error}</div>}
+
+          <form onSubmit={handleLogin}>
+            <label className="label">Email address</label>
+            <input
+              type="email"
+              className="input-box"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <label className="label">Password</label>
+            <input
+              type="password"
+              className="input-box"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button type="submit" className="login-btn">
+              Login
+            </button>
+          </form>
         </div>
       </div>
     </div>

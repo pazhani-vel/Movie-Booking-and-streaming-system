@@ -1,62 +1,162 @@
-.title-box
-{
-    font-size:70px;
-    padding:20px;
+.player-container {
+  padding-top: 110px;
+  min-height: 90vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
 }
 
-.title
-{
-    font-family:'Times New Roman', Times, serif;
-    column-gap: 10px;
-    font-weight: 400;
-    font-size: 100px;
-    color: rgb(225, 219, 211);
+/* TOP - POSTER + TITLE + DESCRIPTION */
+.poster-details-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px;
+  text-align: center;
 }
 
-.video-player{
-    width: 100%;
-    padding-bottom: 20px;
+.poster-big {
+  width: 320px;
+  height: 460px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
 }
 
-.box {
-    padding:50px;
-    border-radius: 20px;
-    background-color: black;
+.movie-title {
+  margin-top: 18px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #00e5ff;
+  text-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
 }
 
-.video-player video {
-    width: 100%;      
-    height: auto;      
-    max-height: 500px; 
-    border-radius: 12px;
-    object-fit: cover;
-    display: block;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.movie-desc {
+  width: 70%;
+  margin-top: 12px;
+  opacity: 0.9;
 }
 
-
-.play-container
-{
-    padding-top: 20px;
-    color: aliceblue;
-    background-color: rgb(75, 69, 69);
-}
-
-.right-box
-{
-    padding-left: 100px;
-}
-
-.loading
-{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: black;
+/* ✅ Wishlist icon + text container */
+.wishlist-wrapper {
   display: flex;
   align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.wishlist-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: 0.25s ease;
+}
+
+/* ✅ Wishlist icon */
+.wishlist-icon {
+  width: 42px;
+  height: 42px;
+  filter: none !important;
+  transition: 0.25s ease-in-out;
+}
+
+/* Hover glow */
+.wishlist-wrapper:hover .wishlist-icon {
+  transform: scale(1.25);
+  filter: drop-shadow(0 0 10px #ffe600);
+}
+
+.wishlist-wrapper:hover .wishlist-text {
+  color: #ffe600;
+  text-shadow: 0 0 10px #ffe600;
+}
+
+/* Already added */
+.wishlist-icon.active {
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 15px #ffd700) brightness(130%);
+}
+
+/* MIDDLE — VIDEO */
+.video-section {
+  width: 90%;
+  max-width: 1300px;
+  margin-top: 34px;
+}
+
+.video-section video {
+  width: 100%;
+  height: 70vh;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+}
+
+/* CAST SECTION */
+.cast-title {
+  font-size: 1.7rem;
+  margin-top: 40px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.cast-scroll {
+  width: 92%;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 18px;
+  padding-bottom: 20px;
+}
+
+.cast-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cast-scroll::-webkit-scrollbar-thumb {
+  background: #00e5ff;
+  border-radius: 8px;
+}
+
+.cast-card {
+  min-width: 120px;
+  text-align: center;
+}
+
+.cast-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.5);
+}
+
+.cast-card p {
+  margin-top: 6px;
+}
+
+/* LOADING */
+.loading-player {
+  display: flex;
   justify-content: center;
-  z-index: 9999
+  padding-top: 150px;
+}
+
+.loading-player video {
+  width: 60vw;
+  height: 60vh;
+}
+
+/* RESPONSIVE FIXES */
+@media (max-width: 900px) {
+  .movie-desc {
+    width: 90%;
+  }
+  .video-section video {
+    height: 45vh;
+  }
 }

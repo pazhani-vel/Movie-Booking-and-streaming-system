@@ -1,0 +1,114 @@
+/* Background */
+.login-bg {
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at top, #101820, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glass card wrapper */
+.login-wrapper {
+  width: 420px;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+  border-radius: 18px;
+  padding: 30px;
+  color: white;
+}
+
+/* Title */
+.title {
+  text-align: center;
+  font-size: 1.9rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #00e5ff;
+}
+
+/* Switch buttons */
+.switch-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.switch-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: transparent;
+  color: #ccc;
+  cursor: pointer;
+  border: 1px solid #444;
+  transition: 0.3s;
+}
+
+.switch-btn:hover,
+.switch-btn.active {
+  background: #00e5ff;
+  color: black;
+  border-color: #00e5ff;
+}
+
+/* Form controls */
+.label {
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 15px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.input-box {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  outline: none;
+  color: white;
+  font-size: 1rem;
+}
+
+/* Login button */
+.login-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #00e5ff;
+  color: black;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+  background: #00c3ff;
+}
+
+/* bottom text */
+.bottom-text {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.link {
+  color: #00e5ff;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.alert-box {
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff4d4d;
+  text-align: center;
+  margin-bottom: 12px;
+}

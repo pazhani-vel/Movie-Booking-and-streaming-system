@@ -1,32 +1,35 @@
-.footer
-{
-    padding:10px;
-    color: aliceblue;
-    background-color: rgb(29, 28, 28);
-    bottom: 0%;
-    border-radius:20px;
+/* =========================================================
+   Jio/Hotstar Elite – FOOTER
+   ========================================================= */
+:root{ --panel:#0f1117; --ink:#f8fbff; --muted:#a9b1c1; }
+
+.footer{
+  width:100%;
+  background:linear-gradient(180deg, #0a0b0d 0%, #08090b 100%);
+  border-top:1px solid rgba(255,255,255,.06);
+  color:#c7ced8; padding:38px 12px 28px; margin-top:76px;
+  box-shadow:inset 0 12px 32px rgba(0,0,0,.18);
 }
-.insta
-{
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;
-    margin-right: 20px;
-    cursor: pointer;
+
+.icon-list{ display:flex; justify-content:center; gap:16px; }
+.icon-list img{
+  width:32px;height:32px; object-fit:cover; border-radius:8px;
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.35));
+  transition:transform .22s ease, filter .22s ease;
 }
-.youtube
-{
-    width: 45px;
-    height:45px;
-    border-radius: 10px;
-    margin-left: 20px;
-    cursor: pointer;
+.icon-list img:hover{
+  transform:translateY(-3px) scale(1.06);
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));
 }
-.text-list
-{
-    padding: 5px;
+
+/* text links cluster */
+.text-list{
+  margin-top:16px; display:flex; flex-wrap:wrap;
+  gap:22px; justify-content:center; font-size:.96rem; color:#aeb6c2;
 }
-.text-list p
-{
-    cursor: pointer;
+.text-list p{ margin:0; cursor:default; }
+
+.rights{
+  margin-top:10px; text-align:center;
+  font-size:.86rem; color:#8f98a6;
 }

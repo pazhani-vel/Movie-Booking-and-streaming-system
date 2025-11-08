@@ -1,6 +1,7 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Login_user.css";   // ✅ Add this
 import { UserContext } from "../../context/UserContext.jsx";
 
 const Login_user = () => {
@@ -8,16 +9,13 @@ const Login_user = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
   const { setUser } = useContext(UserContext);
-
 
   const validateForm = () => {
     if (!email || !password) {
       setError("All fields are required!");
       return false;
     }
-    // Simple email pattern
     const emailPattern = /\S+@\S+\.\S+/;
     if (!emailPattern.test(email)) {
       setError("Enter a valid email address!");
@@ -37,77 +35,55 @@ const Login_user = () => {
         password,
       });
 
-      setUser(res.data.user); // store the user details locally
-
-      console.log(res.data.user);
-
+      setUser(res.data.user);
       alert(res.data.message);
-      navigate("/home"); // After login stay on home
+      navigate("/favourite");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-5">
-          <div className="card">
-            <div className="card-body">
-              <h3 className="text-center mb-4">User Login</h3>
+    <div className="login-bg">
+      <div className="login-wrapper">
+        <div className="login-card">
+          <h3 className="title">User Login</h3>
 
-              <div className="login-toggle text-center mb-4">
-                <button
-                  className="btn btn-outline-secondary  "
-                  onClick={() => navigate("/admin_login")}
-                >
-                  Admin Login
-                </button>
-                <button
-                  className="btn btn-outline-primary me-2 active-btn"
-                  onClick={() => navigate("/")}
-                >
-                  User Login
-                </button>
-              </div>
-              
-              {error && <div className="alert alert-danger">{error}</div>}
-              <form onSubmit={handleLogin}>
-                <div className="mb-3">
-                  <label className="form-label">Email address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-
-                <button type="submit" className="btn btn-primary w-100">
-                  Login
-                </button>
-              </form>
-
-              <p className="text-center mt-3">
-                Don’t have an account?{" "}
-                <Link to="/signup" className="text-decoration-none">
-                  Create Account
-                </Link>
-              </p>
-            </div>
+          <div className="switch-container">
+            <button className="switch-btn" onClick={() => navigate("/admin_login")}>Admin Login</button>
+            <button className="switch-btn active">User Login</button>
           </div>
+
+          {error && <div className="alert-box">{error}</div>}
+
+          <form onSubmit={handleLogin}>
+            <label className="label">Email address</label>
+            <input
+              type="email"
+              className="input-box"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <label className="label">Password</label>
+            <input
+              type="password"
+              className="input-box"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button type="submit" className="login-btn">
+              Login
+            </button>
+          </form>
+
+          <p className="bottom-text">
+            Don’t have an account?
+            <Link to="/signup" className="link"> Create Account</Link>
+          </p>
         </div>
       </div>
     </div>

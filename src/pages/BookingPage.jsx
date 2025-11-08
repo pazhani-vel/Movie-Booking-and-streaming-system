@@ -1,43 +1,33 @@
-
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button, Card, ProgressBar } from "react-bootstrap";
 import axios from "axios";
 import Navigationbar from "../components/Navbar/Navbar";
 import Footerbar from "../components/Footer/Footer";
-import loadingvideo from  '/src/assets/Loading.mp4';
-import like from '../assets/like.png';
+import loadingvideo from "/src/assets/Loading.mp4";
+import like from "../assets/like.png";
 
 function BookingPage() {
   const { movieId } = useParams();
   const navigate = useNavigate();
-  const [movie,setMovie]=useState(null);
+  const [movie, setMovie] = useState(null);
+  const [liked, setLiked] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const res = await axios.get(`http://127.0.0.1:5000/booking/${movieId}`);
         setMovie(res.data);
-        console.log(res.data);
-      } catch (err) {
-        console.error("Error fetching movie:", err);
-      }
+      } catch (err) {}
     };
-
     fetchMovie();
   }, [movieId]);
 
-  const [liked, setLiked] = useState(false);
-  const [clicked, setClicked] = useState(false); // track if clicked once
-
   const handleClick = () => {
-    if (clicked==false) {       // only allow first click
+    if (clicked === false) {
       setLiked(true);
       setClicked(true);
-
-      axios.post(`http://127.0.0.1:5000/likes/${movieId}`)
-      .then((res)=>console.log(res));
-        
+      axios.post(`http://127.0.0.1:5000/likes/${movieId}`);
     }
   };
 
@@ -45,63 +35,148 @@ function BookingPage() {
     navigate(`/language/${movieId}`);
   };
 
-  if(!movie)
-  {
-    return<>{loadingvideo}</>
+  if (!movie) {
+    return (
+      <center style={{ marginTop: "120px" }}>
+        <video src={loadingvideo} autoPlay loop muted width="60%" />
+      </center>
+    );
   }
 
   return (
     <>
-    <Navigationbar/>
-    <Container fluid style={{ paddingTop: "10rem" }}>
-      <Row>
-        {/* Left Half */}
-        <Col md={6}>
-          <Card className="bg-dark text-white mb-3">
-            {/* <Card.Img variant="top" src={movie.poster_url} height="400px" style={{ objectFit: "cover" }}/> */}
-            <Card.Body>
-              <Card.Title>{movie.name}</Card.Title>
-              <Card.Text>
-                {/* <strong>Description:</strong> {movie.description || "Lorem ipsum dolor sit amet."}<br/> */}
-                <strong>Likes:</strong> {movie.likes} ❤️ <br/>
-                <strong>Rating:</strong> {movie.rating} ⭐ <br/>
-                {/* <strong>Cast:</strong> {movie.cast?.join(", ") || "N/A"} */}
-                <strong>Language:</strong> {movie.language.join(",")}<br/>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
+      <Navigationbar />
 
-        {/* Right Half */}
-        <Col md={6}>
-          <h5>Rating</h5>
-          <div className="mb-3">
-            <br></br>
-                  <img style={{width:"40px",height:"40px"}} className="like" src={like} alt="Like icon" />
-                  <button
-      onClick={() => handleClick() }
-      style={{
-        backgroundColor: liked ? "green" : "red",
-        color: "white",
-        padding: "10px 20px",
-        border: "none",
-        borderRadius: "8px",
-        cursor: "pointer",
-        fontWeight: "bold",
-        transition: "background-color 0.3s ease",
-      }} className="m-2" >
-      Like
-    </button>
-                  <p>Hit Your Like Here</p>
+      <style>{`
+        .booking-page-container{
+          min-height:90vh;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          padding-top:90px;
+          padding-bottom:60px;
+          width:100%;
+          padding-left:4%;
+          padding-right:4%;
+        }
+        .booking-wrapper{
+          display:flex;
+          gap:40px;
+          width:100%;
+          max-width:1400px;
+          color:#fff;
+        }
+        .poster-box{
+          width:50%;
+          border-radius:14px;
+          overflow:hidden;
+          box-shadow:0 12px 40px rgba(0,0,0,.45);
+        }
+        .poster-box img{
+          width:100%;
+          height:100%;
+          object-fit:cover;
+        }
+        .details-box{
+          width:50%;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          gap:26px;
+          padding:20px;
+          background:rgba(15,17,22,.75);
+          border-radius:16px;
+          backdrop-filter:blur(14px);
+        }
+        .movie-title{
+          font-size:2.6rem;
+          font-weight:800;
+        }
+        .movie-meta{
+          font-size:1.2rem;
+          color:#c7c7c7;
+          line-height:1.6;
+        }
+        .like-box{
+          display:flex;
+          align-items:center;
+          gap:16px;
+        }
+        .like-icon{
+          width:42px;
+          height:42px;
+        }
+        .like-btn{
+          background:#ff0033;
+          color:white;
+          padding:10px 22px;
+          border:none;
+          border-radius:8px;
+          cursor:pointer;
+          font-weight:700;
+          transition:.3s;
+        }
+        .liked{
+          background:#00c853;
+        }
+        .book-btn{
+          background:#00e5ff;
+          color:black;
+          padding:14px;
+          width:180px;
+          font-size:1.2rem;
+          border:none;
+          border-radius:10px;
+          cursor:pointer;
+          font-weight:700;
+          transition:.3s;
+        }
+        .book-btn:hover{
+          transform:scale(1.07);
+          box-shadow:0 6px 22px rgba(0,229,255,.35);
+        }
+        @media(max-width:900px){
+          .booking-wrapper{flex-direction:column;}
+          .poster-box,.details-box{width:100%;}
+          .movie-title{font-size:2rem;}
+        }
+      `}</style>
+
+      <div className="booking-page-container">
+        <div className="booking-wrapper">
+
+          <div className="poster-box">
+            <img src={movie.poster_url} alt="Movie Poster" />
           </div>
 
-          <Button variant="primary" onClick={handleBook}>Book Tickets</Button>
-        </Col>
-      </Row>
-    </Container>
-    <Footerbar/>
+          <div className="details-box">
+            <div className="movie-title">{movie.name}</div>
+
+            <div className="movie-meta">
+              Rating: ⭐ {movie.rating} <br />
+              Likes: ❤️ {movie.likes} <br />
+              Language: {movie.language.join(", ")}
+            </div>
+
+            <div className="like-box">
+              <img src={like} className="like-icon" />
+              <button
+                onClick={handleClick}
+                className={`like-btn ${liked ? "liked" : ""}`}
+              >
+                {liked ? "Liked" : "Like"}
+              </button>
+            </div>
+
+            <button className="book-btn" onClick={handleBook}>
+              Book Tickets
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <Footerbar />
     </>
-    
   );
 }
 

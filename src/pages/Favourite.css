@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+/* MAIN WRAPPER */
+.fav-container {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding-top: 10px;
+  color: white;
+  background: #0d0d0f;
+}
+
+/* Only Favourite styles */
+.fav-container * {
+  font-family: "Poppins", sans-serif;
+}
+
+/* TITLE */
+.fav-container h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+/* SUBTITLE */
+.fav-container .subtext {
+  text-align: center;
+  color: #b2b2b2;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+/* ✅ GRID WITH MORE VERTICAL SPACING */
+.fav-container .grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 12px;      /* horizontal spacing */
+  row-gap: 25px;         /* ✅ increased vertical spacing */
+  padding: 10px;
+}
+
+/* CARD */
+.fav-container .fav-card {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  transition: 0.25s ease;
+  cursor: pointer;
+}
+
+.fav-container .fav-card:hover {
+  transform: scale(1.05);
+}
+
+/* IMAGE */
+.fav-container .fav-card img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 52%;
+  object-fit: cover;
+}
+
+/* OVERLAY */
+.fav-container .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.55), transparent);
+  z-index: 1;
+}
+
+/* TEXT */
+.fav-container .text {
+  position: absolute;
+  bottom: 6px;
+  left: 8px;
+  z-index: 2;
+}
+
+.fav-container .text h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fav-container .text p {
+  font-size: 0.8rem;
+  color: #e2e2e2;
+}
+
+/* HEART ICON */
+.fav-container .heart {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  fill: #ffffff90;
+  cursor: pointer;
+  z-index: 3;
+  transition: 0.22s;
+}
+
+.fav-container .heart.active {
+  fill: #ff2e93;
+  transform: scale(1.2);
+}
+
+/* CONTINUE BUTTON */
+.fav-container .continue {
+  margin-top: 20px;
+  width: 100%;
+  padding: 13px 0;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, #007bff, #ff007f);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fav-container .continue:hover {
+  opacity: 0.9;
+}

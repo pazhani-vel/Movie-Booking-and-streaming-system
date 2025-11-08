@@ -9,35 +9,115 @@ const BookingConfirmationPage = () => {
   const { theatre, time, selectedSeats = [], seatAudienceMap = {} } = state || {};
 
   if (!theatre || !time) {
-    return <p className="text-center mt-10">No booking details found.</p>;
+    return (
+      <div style={{ color: "white", paddingTop: "140px", textAlign: "center" }}>
+        No booking details found.
+      </div>
+    );
   }
 
-  // Calculate total price based on audience type per seat
   const totalPrice = selectedSeats.reduce((total, seat) => {
     const type = seatAudienceMap[seat];
-    const price = type === "Child" ? 150 : 200; // You can add other types if needed
+    const price = type === "Child" ? 150 : 200;
     return total + price;
   }, 0);
 
   return (
-    <div className="p-6 text-center">
-      <h1 className="text-2xl font-bold mb-4">Booking Confirmation</h1>
-      <p className="mb-2">Theatre: {theatre.name}</p>
-      <p className="mb-2">Showtime: {time}</p>
-      <p className="mb-4 font-semibold">Seats and Audience Type:</p>
-      
-      {selectedSeats.map((seat) => (
-        <p key={seat}>
-          Seat {seat}: {seatAudienceMap[seat]}
-        </p>
-      ))}
+    <>
+      <style>{`
+        .confirm-container{
+          padding-top:120px;
+          width:100%;
+          min-height:85vh;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          flex-direction:column;
+          color:white;
+        }
+        .confirm-card{
+          width:420px;
+          background:rgba(15,17,22,.8);
+          border-radius:16px;
+          padding:32px;
+          backdrop-filter:blur(14px);
+          box-shadow:0 8px 30px rgba(0,0,0,.45);
+          text-align:center;
+        }
+        .confirm-title{
+          font-size:2rem;
+          font-weight:800;
+          margin-bottom:10px;
+          color:#00e5ff;
+          text-shadow:0 0 18px rgba(0,229,255,.3);
+        }
+        .confirm-line{
+          font-size:1.1rem;
+          margin-bottom:6px;
+          opacity:.85;
+        }
+        .seat-block{
+          margin-top:16px;
+          border-radius:12px;
+          background:white;
+          color:black;
+          padding:12px;
+          font-size:.95rem;
+        }
+        .total-price{
+          margin-top:20px;
+          font-size:1.4rem;
+          font-weight:800;
+          color:#00e5ff;
+        }
+        .done-btn{
+          margin-top:26px;
+          width:100%;
+          padding:12px;
+          border:none;
+          border-radius:10px;
+          background:#00e5ff;
+          font-size:1.2rem;
+          font-weight:700;
+          cursor:pointer;
+          transition:.25s;
+        }
+        .done-btn:hover{
+          transform:scale(1.08);
+          box-shadow:0 0 22px rgba(0,229,255,.4);
+        }
+      `}</style>
 
-      <p className="mb-4 font-semibold">Total Price: ₹{totalPrice}</p>
+      <div className="confirm-container">
+        <div className="confirm-card">
+          <div className="confirm-title">Booking Confirmed ✅</div>
 
-      <Button variant="primary" onClick={() => navigate("/")}>
-        Done
-      </Button>
-    </div>
+          <div className="confirm-line">
+            <strong>Theatre:</strong> {theatre}
+          </div>
+          <div className="confirm-line">
+            <strong>Showtime:</strong> {time}
+          </div>
+
+          <div className="seat-block">
+            {selectedSeats.map((seat) => (
+              <div key={seat}>
+                Seat {seat} → {seatAudienceMap[seat]}
+              </div>
+            ))}
+          </div>
+
+          <div className="total-price">Total Amount: ₹{totalPrice}</div>
+
+          <button
+            className="done-btn"
+            onClick={() => navigate("/")}
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    </>
   );
 };
 

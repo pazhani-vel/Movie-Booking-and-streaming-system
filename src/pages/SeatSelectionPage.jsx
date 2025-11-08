@@ -1,36 +1,32 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import SeatGrid from "../components/SeatGrid";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import Navigationbar from "../components/Navbar/Navbar";
 import Footerbar from "../components/Footer/Footer";
-
 
 const SeatSelectionPage = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [seatAudienceMap, setSeatAudienceMap] = useState({});
   const [bookedSeats, setBookedSeats] = useState([]);
   const navigate = useNavigate();
-
-  const {user}=useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const { movieId, city, lang, theaterName, timing } = useParams();
-  //const user = JSON.parse(localStorage.getItem("user")); // logged-in user
 
-  // Fetch already booked seats on page load
   useEffect(() => {
-    axios.get("http://localhost:5000/api/bookedSeats", {
-      params: { movieId, city, language: lang, theaterName, timing }
-    }).then(res => setBookedSeats(res.data))
-      .catch(err => console.error(err));
+    axios
+      .get("http://localhost:5000/api/bookedSeats", {
+        params: { movieId, city, language: lang, theaterName, timing }
+      })
+      .then((res) => setBookedSeats(res.data))
+      .catch((err) => console.error(err));
   }, [movieId, city, lang, theaterName, timing]);
 
   const handleSeatClick = (seat) => {
     if (selectedSeats.includes(seat)) {
-      setSelectedSeats(selectedSeats.filter(s => s !== seat));
+      setSelectedSeats(selectedSeats.filter((s) => s !== seat));
       const updatedMap = { ...seatAudienceMap };
       delete updatedMap[seat];
       setSeatAudienceMap(updatedMap);
@@ -44,11 +40,8 @@ const SeatSelectionPage = () => {
   };
 
   const handleBooking = async () => {
-    const allSeatsHaveType = selectedSeats.every(seat => seatAudienceMap[seat]);
-    if (!allSeatsHaveType) {
-      alert("Please select audience type for all seats.");
-      return;
-    }
+    const allSeatsHaveType = selectedSeats.every((seat) => seatAudienceMap[seat]);
+    if (!allSeatsHaveType) return alert("Select audience type for all seats.");
 
     try {
       await axios.post("http://localhost:5000/api/bookSeats", {
@@ -58,16 +51,14 @@ const SeatSelectionPage = () => {
         language: lang,
         theaterName,
         timing,
-        seats: selectedSeats.map(seat => ({ seat, type: seatAudienceMap[seat] }))
+        seats: selectedSeats.map((seat) => ({ seat, type: seatAudienceMap[seat] }))
       });
-      console.log("Booking successful");
-      alert("Seats booked successfully!");
-      navigate(`/mybookingpage`)
-      
-    } catch (err) {
-      alert(err.response.data.message || "Some seats are already booked");
-    }
 
+      alert("Seats booked successfully!");
+      navigate(`/mybookingpage`);
+    } catch (err) {
+      alert(err.response?.data?.message || "Some seats already booked");
+    }
 
     try {
       await axios.post("http://localhost:5000/sendmail", {
@@ -77,69 +68,128 @@ const SeatSelectionPage = () => {
         language: lang,
         theaterName,
         timing,
-        seats: selectedSeats.map(seat => ({ seat, type: seatAudienceMap[seat] }))
+        seats: selectedSeats.map((seat) => ({ seat, type: seatAudienceMap[seat] }))
       });
-      console.log("Mail sent successfully");
-    } catch (err) {
-      console.log(err);
-    }
-
+    } catch (err) {}
   };
 
   return (
     <>
-    <Navigationbar/>
-    <div className="p-6 flex flex-col items-center">
-      <h2 className="text-xl font-bold mb-4 text-white" style={{ paddingTop: "10rem" }}>
-        {theaterName} – {timing}
-      </h2>
+      <Navigationbar />
 
-      <div className="p-4 bg-gray-800 rounded-lg">
-        <SeatGrid
-          selectedSeats={selectedSeats}
-          bookedSeats={bookedSeats}
-          onSeatClick={handleSeatClick}
-        />
+      <style>{`
+        .seat-page-container{
+          padding-top:120px;
+          padding-bottom:80px;
+          width:100%;
+          min-height:86vh;
+          color:white;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+        }
+        .page-title{
+          font-size:2rem;
+          font-weight:800;
+          margin-bottom:20px;
+          border-left:4px solid #00e5ff;
+          padding-left:14px;
+          text-shadow:0 0 18px rgba(0,229,255,.3);
+        }
+        .seat-grid-wrapper{
+          background:rgba(15,17,22,.75);
+          padding:30px;
+          border-radius:18px;
+          backdrop-filter:blur(14px);
+          box-shadow:0 12px 40px rgba(0,0,0,.45);
+        }
+        .audience-box{
+          margin-top:26px;
+          width:100%;
+          max-width:500px;
+          background:white;
+          border-radius:12px;
+          padding:16px;
+          color:black;
+        }
+        .audience-box label{
+          cursor:pointer;
+          padding:6px;
+          font-size:1rem;
+        }
+        .audience-row{
+          display:flex;
+          gap:14px;
+          margin-top:6px;
+        }
+        .book-btn{
+          margin-top:20px;
+          background:#00e5ff;
+          padding:14px 22px;
+          font-weight:700;
+          font-size:1.2rem;
+          border-radius:10px;
+          border:none;
+          color:black;
+          cursor:pointer;
+          transition:.25s;
+        }
+        .book-btn:hover{
+          transform:scale(1.07);
+          box-shadow:0 0 22px rgba(0,229,255,.4);
+        }
+      `}</style>
+
+      <div className="seat-page-container">
+        <div className="page-title">
+          {theaterName} – {timing}
+        </div>
+
+        <div className="seat-grid-wrapper">
+          <SeatGrid
+            selectedSeats={selectedSeats}
+            bookedSeats={bookedSeats}
+            onSeatClick={handleSeatClick}
+          />
+        </div>
+
+        {selectedSeats.length > 0 && (
+          <div className="audience-box">
+            <h4>Select Audience Type for Each Seat:</h4>
+
+            {selectedSeats.map((seat) => (
+              <div key={seat}>
+                <strong>{seat}</strong>
+                <div className="audience-row">
+                  {["Adult", "Child", "Senior", "Ladies"].map((type) => (
+                    <label key={type}>
+                      <input
+                        type="radio"
+                        name={seat}
+                        value={type}
+                        checked={seatAudienceMap[seat] === type}
+                        onChange={() => handleAudienceChange(seat, type)}
+                      />
+                      {type}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={handleBooking}
+          disabled={selectedSeats.length === 0}
+          className="book-btn"
+        >
+          Book {selectedSeats.length > 0 && `(${selectedSeats.length})`}
+        </button>
       </div>
 
-      {selectedSeats.length > 0 && (
-        <div className="mt-8 w-full max-w-md p-4 bg-gray-100 rounded-lg">
-          <h4 className="mb-4 font-semibold text-black">
-            Select Audience Type for Each Seat:
-          </h4>
-          {selectedSeats.map(seat => (
-            <div key={seat} className="mb-3 p-3 border rounded bg-white text-black">
-              <strong>{seat}</strong>
-              <div className="flex gap-4 mt-2">
-                {["Adult", "Child", "Senior", "Ladies"].map(type => (
-                  <label key={type} className="flex items-center gap-1">
-                    <input
-                      type="radio"
-                      name={seat}
-                      value={type}
-                      checked={seatAudienceMap[seat] === type}
-                      onChange={() => handleAudienceChange(seat, type)}
-                    />
-                    {type}
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <Button
-        type="button"
-        variant="primary"
-        onClick={handleBooking}
-        disabled={selectedSeats.length === 0}
-        className="px-6 py-2 rounded disabled:bg-blue-500 disabled:opacity-70 mt-6"
-      >
-        Book {selectedSeats.length > 0 && `(${selectedSeats.length})`}
-      </Button>
-    </div>
-    <Footerbar/>
+      <Footerbar />
     </>
   );
 };
